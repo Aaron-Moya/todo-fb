@@ -1,7 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { FirebaseApps, FirebaseApp } from '@angular/fire/app';
-import { collection, collectionData, CollectionReference, Firestore, getDocs } from '@angular/fire/firestore';
+import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { TaskService } from '../../services/task.service';
+import Task from '../../interfaces/task';
 
 @Component({
     standalone: true,
@@ -11,17 +11,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 
 export class TaskListComponent {
-    private firestore = inject(Firestore);
+    private taskService = inject(TaskService);
 
-    private tasksCollection = collection(this.firestore, 'tasks') as CollectionReference<Task>;
-
-    private tasks$ = collectionData(this.tasksCollection, { idField: 'id' });
-    tasks = toSignal(this.tasks$, { initialValue: [] as Task[] });
-}
-
-interface Task {
-  id: string;      // ← se agrega con `idField: 'id'`
-  title: string;
-  completed: boolean;
-  dueDate?: Date;   // por ejemplo, opcional
+    tasks = toSignal(this.taskService.tasks$, { initialValue: [] as Task[] });
 }
