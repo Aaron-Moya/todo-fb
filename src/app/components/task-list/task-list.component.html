@@ -1,0 +1,6 @@
+<ul>
+    @for (task of tasks(); track task.id) {
+        <h3>{{ task.title }}</h3>
+        <p>Completado: {{ task.completed ? 'Sí' : 'No' }}</p>
+    }
+</ul>
